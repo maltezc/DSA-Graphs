@@ -7,7 +7,6 @@ class Node {
   }
 }
 
-
 /** Graph class. */
 
 class Graph {
@@ -25,7 +24,7 @@ class Graph {
     for (let vertex of vertexArray) {
       this.addVertex(vertex);
     }
-   }
+  }
 
   /** add edge between vertices v1,v2 */
   addEdge(v1, v2) {
@@ -35,8 +34,8 @@ class Graph {
 
   /** remove edge between vertices v1,v2 */
   removeEdge(v1, v2) {
-    v1.adjacent.remove(v2);
-    v2.adjacent.remove(v1);
+    v1.adjacent.delete(v2);
+    v2.adjacent.delete(v1);
   }
 
   /** remove vertex from graph:
@@ -45,19 +44,44 @@ class Graph {
    * - update any adjacency lists using that vertex
    */
   removeVertex(vertex) {
-    this.nodes.remove(vertex)
+    this.nodes.delete(vertex);
   }
 
   /** traverse graph with DFS and returns array of Node values */
-  depthFirstSearch(start) {
-
+  depthFirstSearch(start, visited = new Set([start])) {
+    for (let neighbour of start.adjacent) {
+      if (!visited.has(neighbour)) {
+        visited.add(neighbour);
+        this.depthFirstSearch(neighbour, visited);
+      }
+    }
+    return Array.from(visited).map((v) => v.value);
   }
 
   /** traverse graph with BDS and returns array of Node values */
-  breadthFirstSearch(start) { }
+  breadthFirstSearch(start) {
+    let toVisitQueue = [start];
+    let visited = new Set(toVisitQueue);
+
+    while (toVisitQueue.length > 0) {
+      let currNode = toVisitQueue.shift();
+
+      for (let neighbour of currNode.adjacent) {
+        if (!visited.has(neighbour)) {
+          toVisitQueue.push(neighbour);
+          visited.add(neighbour);
+        }
+      }
+    }
+    return Array.from(visited).map((v) => v.value);
+  }
 
   /** find the distance of the shortest path from the start vertex to the end vertex */
-  distanceOfShortestPath(start, end) { }
+  distanceOfShortestPath(start, end) {
+    let toVisitQueue = [start];
+    let visited = new Set (toVisitQueue);
+    let path = [start]
+  }
 }
 
-module.exports = { Graph, Node }
+module.exports = { Graph, Node };
