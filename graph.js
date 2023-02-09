@@ -76,11 +76,36 @@ class Graph {
     return Array.from(visited).map((v) => v.value);
   }
 
+  /*
+  depthFirstSearch(start, visited = new Set([start])) {
+    for (let neighbour of start.adjacent) {
+      if (!visited.has(neighbour)) {
+        visited.add(neighbour);
+        this.depthFirstSearch(neighbour, visited);
+      }
+    }
+    return Array.from(visited).map((v) => v.value);
+  } */
+
   /** find the distance of the shortest path from the start vertex to the end vertex */
-  distanceOfShortestPath(start, end) {
+  distanceOfShortestPath(start, end, shortestRoute) {
     let toVisitQueue = [start];
     let visited = new Set (toVisitQueue);
-    let path = [start]
+    let route = [start]
+    let current = start;
+
+    let shortestRoute = [];
+
+    if (current.adjacent.size !== 0) {
+      /* continue going / append to path*/
+      if (!visited.has(neighbour)) {
+        visited.add(neighbour);
+        this.depthFirstSearch(neighbour, visited);
+      }
+    }
+
+    shortestRoute
+
   }
 }
 
