@@ -88,24 +88,80 @@ class Graph {
   } */
 
   /** find the distance of the shortest path from the start vertex to the end vertex */
-  distanceOfShortestPath(start, end, shortestRoute) {
-    let toVisitQueue = [start];
-    let visited = new Set (toVisitQueue);
-    let route = [start]
+  // distanceOfShortestPath(
+  //   start,
+  //   end,
+  //   visited = new Set([start]),
+  //   shortestRoute,
+  //   route
+  // ) {
+  //   let toVisitQueue = [start];
+  //   let route = [start];
+  //   let current = start;
+
+  //   let shortestRoute = [];
+
+  //   if (current.adjacent.size !== 0) {
+  //     /* continue going / append to path*/
+  //     for (let neighbour of start.adjacent) {
+  //       if (!visited.has(neighbour)) {
+  //         visited.add(neighbour);
+
+  //         if (this.distanceOfShortestPath(neighbour, visited)) {
+  //           return true;
+  //         }
+  //       }
+  //     }
+  //   }
+  //   return shortestRoute.length;
+  // }
+
+  // out put: length of shortest path from start to end
+  distanceOfShortestPath(start, end) {
+    // create a queue where start is in the queue
+    // current node = start
+    // current route = []
+    // shortest route length
+
+    // while tovisitqueue > 0
+    // iterate through ajacent neighbours,
+    // remove current node from queue,
+    // add neighbours to visited set,
+    // add neighbours to toVisit queue
+    // add current neighbour to route
+
+    // if current node == end ,
+    // check to see if route length < shortestroutelength ||
+    // if shortest route length === null then set shortest route length to route length
     let current = start;
+    let currentRoute = [];
+    let shortestRouteLength = null;
 
-    let shortestRoute = [];
+    let toVisitQueue = [start];
+    let visited = new Set(toVisitQueue);
 
-    if (current.adjacent.size !== 0) {
-      /* continue going / append to path*/
-      if (!visited.has(neighbour)) {
-        visited.add(neighbour);
-        this.depthFirstSearch(neighbour, visited);
+    while (toVisitQueue.length > 0) {
+      let current = toVisitQueue.shift();
+
+      for (let neighbour of current.adjacent) {
+        if (!visited.has(neighbour)) {
+          visited.add(neighbour);
+          toVisitQueue.push(neighbour);
+          currentRoute.push(neighbour);
+
+          if (current === end) {
+            if (
+              shortestRouteLength === null ||
+              currentRoute.length < shortestRouteLength
+            ) {
+              shortestRouteLength = currentRoute.length;
+            }
+          }
+        }
       }
     }
 
-    shortestRoute
-
+    return shortestRouteLength;
   }
 }
 
