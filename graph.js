@@ -76,16 +76,44 @@ class Graph {
     return Array.from(visited).map((v) => v.value);
   }
 
-  /*
-  depthFirstSearch(start, visited = new Set([start])) {
-    for (let neighbour of start.adjacent) {
-      if (!visited.has(neighbour)) {
-        visited.add(neighbour);
-        this.depthFirstSearch(neighbour, visited);
+  distanceOfShortestPath(start, end) {
+    // visit queue
+    // visited set
+    // object with {curr node :next node}
+    // map = {
+    //   a: b,
+    //   b: c,
+    //   c: null
+    // }
+
+    // shift current node off queue
+
+    // while loop for items in queue
+    // if neighbor is not in visited
+    // add neighbor to visit queue and visited set
+    // update object w/ currNode:neighbor
+
+    // calculate distance of nodes from object
+    let toVisitQueue = [start];
+    let visited = new Set(toVisitQueue);
+    let pathsTaken = new Map();
+
+    while (toVisitQueue.length > 0) {
+      let currNode = toVisitQueue.shift();
+
+      for (let neighbour of currNode.adjacent) {
+        if (!visited.has(neighbour)) {
+          toVisitQueue.push(neighbour);
+          visited.add(neighbour);
+          pathsTaken.set(currNode.value, neighbour.value);
+        }
+      }
+
+      if (currNode === end) {
+        return pathsTaken.size;
       }
     }
-    return Array.from(visited).map((v) => v.value);
-  } */
+  }
 
   /** find the distance of the shortest path from the start vertex to the end vertex */
   // distanceOfShortestPath(
@@ -174,114 +202,114 @@ class Graph {
   // visited
   // shortestRouteFoundThusFar
 
-  distanceOfShortestPathNew(
-    start,
-    end,
-    visited = new Set([start]),
-    currentCountRoute = 0,
-    shortestRouteFoundThusFar = 0
-  ) {
-    // for loop here
-    for (let neighbour of start.adjacent) {
-      // if not visited yet,
-      if (!visited.has(neighbour)) {
-        // if value is what we're looking for || there are no children,
-        if (neighbour === end) {
-          // if (start === end) {
-          if (
-            currentCountRoute < shortestRouteFoundThusFar ||
-            shortestRouteFoundThusFar === 0
-          ) {
-            shortestRouteFoundThusFar = currentCountRoute;
-            currentCountRoute = 0;
-            // add path to visited
-          }
-        }
-        if (start.adjacent.size === 0) {
-          currentCountRoute = 0;
-        }
-        /* if (start === end || start.adjacent.size === 0) {
-          //    compare this path to shortest & zero out count route
-          if (currentCountRoute < shortestRouteFoundThusFar) {
-            //    if shorter, replace value.
-            shortestRouteFoundThusFar = currentCountRoute;
-          }
-          currentCountRoute = 0;
-        } */
-        // add to visited,
-        visited.add(neighbour);
+  //   distanceOfShortestPathNew(
+  //     start,
+  //     end,
+  //     visited = new Set([start]),
+  //     currentCountRoute = 0,
+  //     shortestRouteFoundThusFar = 0
+  //   ) {
+  //     // for loop here
+  //     for (let neighbour of start.adjacent) {
+  //       // if not visited yet,
+  //       if (!visited.has(neighbour)) {
+  //         // if value is what we're looking for || there are no children,
+  //         if (neighbour === end) {
+  //           // if (start === end) {
+  //           if (
+  //             currentCountRoute < shortestRouteFoundThusFar ||
+  //             shortestRouteFoundThusFar === 0
+  //           ) {
+  //             shortestRouteFoundThusFar = currentCountRoute;
+  //             currentCountRoute = 0;
+  //             // add path to visited
+  //           }
+  //         }
+  //         if (start.adjacent.size === 0) {
+  //           currentCountRoute = 0;
+  //         }
+  //         /* if (start === end || start.adjacent.size === 0) {
+  //           //    compare this path to shortest & zero out count route
+  //           if (currentCountRoute < shortestRouteFoundThusFar) {
+  //             //    if shorter, replace value.
+  //             shortestRouteFoundThusFar = currentCountRoute;
+  //           }
+  //           currentCountRoute = 0;
+  //         } */
+  //         // add to visited,
+  //         visited.add(neighbour);
 
-        // increment current count route
-        currentCountRoute++;
+  //         // increment current count route
+  //         currentCountRoute++;
 
-        // and recurse
-        this.distanceOfShortestPathNew(
-          neighbour,
-          end,
-          visited,
-          currentCountRoute,
-          shortestRouteFoundThusFar
-        );
-      }
-      // end of for loop
-    }
+  //         // and recurse
+  //         this.distanceOfShortestPathNew(
+  //           neighbour,
+  //           end,
+  //           visited,
+  //           currentCountRoute,
+  //           shortestRouteFoundThusFar
+  //         );
+  //       }
+  //       // end of for loop
+  //     }
 
-    // return shortest value at the end.
-    return shortestRouteFoundThusFar;
-  }
+  //     // return shortest value at the end.
+  //     return shortestRouteFoundThusFar;
+  //   }
 
-  distanceOfShortestPathNew(
-    start,
-    end,
-    ogStart,
-    visited = new Set([start]),
-    currentCountRoute = new Set([start]),
-    shortestRouteFoundThusFar = new Set()
-  ) {
-    // for loop here
-    for (let neighbour of start.adjacent) {
-      // if path not visited yet,
-      // if index(1) is not in any visited[1]
-      if (!visited.has(neighbour)) {
-        // if value is what we're looking for || there are no children,
-        if (neighbour === end) {
-          // if (start === end) {
-          if (
-            currentCountRoute < shortestRouteFoundThusFar ||
-            shortestRouteFoundThusFar === 0
-          ) {
-            shortestRouteFoundThusFar = currentCountRoute;
-            currentCountRoute = 0;
-            // add path to visited
-            // reset start to R
-          }
-        }
-        if (start.adjacent.size === 0) {
-          currentCountRoute = 0;
-        }
+  //   distanceOfShortestPathNew(
+  //     start,
+  //     end,
+  //     ogStart,
+  //     visited = new Set([start]),
+  //     currentCountRoute = new Set([start]),
+  //     shortestRouteFoundThusFar = new Set()
+  //   ) {
+  //     // for loop here
+  //     for (let neighbour of start.adjacent) {
+  //       // if path not visited yet,
+  //       // if index(1) is not in any visited[1]
+  //       if (!visited.has(neighbour)) {
+  //         // if value is what we're looking for || there are no children,
+  //         if (neighbour === end) {
+  //           // if (start === end) {
+  //           if (
+  //             currentCountRoute < shortestRouteFoundThusFar ||
+  //             shortestRouteFoundThusFar === 0
+  //           ) {
+  //             shortestRouteFoundThusFar = currentCountRoute;
+  //             currentCountRoute = 0;
+  //             // add path to visited
+  //             // reset start to R
+  //           }
+  //         }
+  //         if (start.adjacent.size === 0) {
+  //           currentCountRoute = 0;
+  //         }
 
-        // add path to visited,
-        visited.add(neighbour);
+  //         // add path to visited,
+  //         visited.add(neighbour);
 
-        // increment current count route
-        currentCountRoute++;
+  //         // increment current count route
+  //         currentCountRoute++;
 
-        // and recurse
-        this.distanceOfShortestPathNew(
-          neighbour,
-          end,
-          ogStart,
-          visited,
-          currentCountRoute,
-          shortestRouteFoundThusFar
-        );
-      }
-      // end of for loop
-    }
+  //         // and recurse
+  //         this.distanceOfShortestPathNew(
+  //           neighbour,
+  //           end,
+  //           ogStart,
+  //           visited,
+  //           currentCountRoute,
+  //           shortestRouteFoundThusFar
+  //         );
+  //       }
+  //       // end of for loop
+  //     }
 
-    // return shortest value at the end.
-    return shortestRouteFoundThusFar;
-  }
+  //     // return shortest value at the end.
+  //     return shortestRouteFoundThusFar;
+  //   }
 }
 
 module.exports = { Graph, Node };
