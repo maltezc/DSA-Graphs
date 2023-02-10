@@ -117,7 +117,7 @@ class Graph {
   // }
 
   // out put: length of shortest path from start to end
-  distanceOfShortestPath(start, end) {
+  /* distanceOfShortestPath(start, end) {
     // create a queue where start is in the queue
     // current node = start
     // current route = []
@@ -134,34 +134,153 @@ class Graph {
     // check to see if route length < shortestroutelength ||
     // if shortest route length === null then set shortest route length to route length
     let current = start;
-    let currentRoute = [];
+    let currentRoute = [current];
     let shortestRouteLength = null;
 
     let toVisitQueue = [start];
     let visited = new Set(toVisitQueue);
+    // BFS
+    // need to track previous node and all nodes that we've seen.
+    // object with key of vertex and value of previous one that we have seen.
+    // once you have reached end, turn into the path.
+    // make sure you dont hit same index
 
     while (toVisitQueue.length > 0) {
-      let current = toVisitQueue.shift();
+      current = toVisitQueue.shift();
 
       for (let neighbour of current.adjacent) {
         if (!visited.has(neighbour)) {
           visited.add(neighbour);
           toVisitQueue.push(neighbour);
-          currentRoute.push(neighbour);
+          currentRoute.push(neighbour); // bug
 
-          if (current === end) {
-            if (
-              shortestRouteLength === null ||
-              currentRoute.length < shortestRouteLength
-            ) {
-              shortestRouteLength = currentRoute.length;
-            }
+        }
+        if (current === end) {
+          if (
+            shortestRouteLength === null ||
+            currentRoute.length < shortestRouteLength
+          ) {
+            shortestRouteLength = currentRoute.length;
           }
         }
       }
     }
 
     return shortestRouteLength;
+  } */
+
+  // start
+  // end
+  // visited
+  // shortestRouteFoundThusFar
+
+  distanceOfShortestPathNew(
+    start,
+    end,
+    visited = new Set([start]),
+    currentCountRoute = 0,
+    shortestRouteFoundThusFar = 0
+  ) {
+    // for loop here
+    for (let neighbour of start.adjacent) {
+      // if not visited yet,
+      if (!visited.has(neighbour)) {
+        // if value is what we're looking for || there are no children,
+        if (neighbour === end) {
+          // if (start === end) {
+          if (
+            currentCountRoute < shortestRouteFoundThusFar ||
+            shortestRouteFoundThusFar === 0
+          ) {
+            shortestRouteFoundThusFar = currentCountRoute;
+            currentCountRoute = 0;
+            // add path to visited
+          }
+        }
+        if (start.adjacent.size === 0) {
+          currentCountRoute = 0;
+        }
+        /* if (start === end || start.adjacent.size === 0) {
+          //    compare this path to shortest & zero out count route
+          if (currentCountRoute < shortestRouteFoundThusFar) {
+            //    if shorter, replace value.
+            shortestRouteFoundThusFar = currentCountRoute;
+          }
+          currentCountRoute = 0;
+        } */
+        // add to visited,
+        visited.add(neighbour);
+
+        // increment current count route
+        currentCountRoute++;
+
+        // and recurse
+        this.distanceOfShortestPathNew(
+          neighbour,
+          end,
+          visited,
+          currentCountRoute,
+          shortestRouteFoundThusFar
+        );
+      }
+      // end of for loop
+    }
+
+    // return shortest value at the end.
+    return shortestRouteFoundThusFar;
+  }
+
+  distanceOfShortestPathNew(
+    start,
+    end,
+    ogStart,
+    visited = new Set([start]),
+    currentCountRoute = new Set([start]),
+    shortestRouteFoundThusFar = new Set()
+  ) {
+    // for loop here
+    for (let neighbour of start.adjacent) {
+      // if path not visited yet,
+      // if index(1) is not in any visited[1]
+      if (!visited.has(neighbour)) {
+        // if value is what we're looking for || there are no children,
+        if (neighbour === end) {
+          // if (start === end) {
+          if (
+            currentCountRoute < shortestRouteFoundThusFar ||
+            shortestRouteFoundThusFar === 0
+          ) {
+            shortestRouteFoundThusFar = currentCountRoute;
+            currentCountRoute = 0;
+            // add path to visited
+            // reset start to R
+          }
+        }
+        if (start.adjacent.size === 0) {
+          currentCountRoute = 0;
+        }
+
+        // add path to visited,
+        visited.add(neighbour);
+
+        // increment current count route
+        currentCountRoute++;
+
+        // and recurse
+        this.distanceOfShortestPathNew(
+          neighbour,
+          end,
+          ogStart,
+          visited,
+          currentCountRoute,
+          shortestRouteFoundThusFar
+        );
+      }
+      // end of for loop
+    }
+
+    // return shortest value at the end.
+    return shortestRouteFoundThusFar;
   }
 }
 
